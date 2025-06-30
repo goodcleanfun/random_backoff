@@ -1,0 +1,19 @@
+{
+    "name": "random_backoff",
+    "version": "0.0.0",
+    "repo": "goodcleanfun/random_backoff",
+    "description": "Randomized doubling backoff strategy using thread-local randomness to spread out contention",
+    "keywords": [],
+    "license": "MIT",
+    "dependencies": {
+        "goodcleanfun/random": "*",
+        "goodcleanfun/threading": "*"
+    },
+    "development": {
+        "silentbicycle/greatest": "*"
+    },
+    "src": [
+        "src/random_backoff.h"
+    ]
+    
+  }
