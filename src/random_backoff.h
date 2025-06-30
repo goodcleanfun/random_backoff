@@ -14,19 +14,12 @@ typedef struct {
     rand64_gen_t random_gen;
 } random_backoff_t;
 
-static inline random_backoff_t *random_backoff_new(uint64_t min_delay, uint64_t max_delay) {
-    random_backoff_t *backoff = (random_backoff_t *)malloc(sizeof(random_backoff_t));
+static inline void random_backoff_init(random_backoff_t *backoff, uint64_t min_delay, uint64_t max_delay) {
     backoff->min_delay = min_delay;
     backoff->max_delay = max_delay;
     backoff->limit = min_delay;
     backoff->random_gen = rand64_gen_init();
     rand64_gen_seed_os(&backoff->random_gen);
-    return backoff;
-}
-
-static inline void random_backoff_destroy(random_backoff_t *backoff) {
-    if (backoff == NULL) return;
-    free(backoff);
 }
 
 static inline void random_backoff_reset(random_backoff_t *backoff) {

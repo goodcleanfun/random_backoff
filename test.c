@@ -28,17 +28,18 @@ static void lock_and_increment(void) {
 
 
 int sleep_thread(void *arg) {
-    random_backoff_t *backoff = random_backoff_new(10, 100);
-    tss_set(thread_local_backoff, backoff);
+    random_backoff_t backoff;
+    random_backoff_init(&backoff, 10, 100);
+    tss_set(thread_local_backoff, &backoff);
     for (int i = 0; i < NUM_INCREMENTS; i++) {
-        random_backoff_reset(backoff);
+        random_backoff_reset(&backoff);
         lock_and_increment();
     }
     return 0;
 }
 
 TEST random_backoff_test(void) {
-    ASSERT_EQ(tss_create(&thread_local_backoff, (tss_dtor_t)random_backoff_destroy), thrd_success);
+    ASSERT_EQ(tss_create(&thread_local_backoff, NULL), thrd_success);
     ASSERT_EQ(mtx_init(&mutex, mtx_plain), thrd_success);
     thrd_t threads[NUM_THREADS];
     for (int i = 0; i < NUM_THREADS; i++) {
