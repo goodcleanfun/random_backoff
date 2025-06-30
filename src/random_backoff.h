@@ -19,19 +19,24 @@ static inline random_backoff_t *random_backoff_new(uint64_t min_delay, uint64_t 
     backoff->min_delay = min_delay;
     backoff->max_delay = max_delay;
     backoff->limit = min_delay;
-    backoff->random_gen = PCG64_INITIALIZER;
+    backoff->random_gen = rand64_gen_init();
     rand64_gen_seed_os(&backoff->random_gen);
     return backoff;
 }
 
-static inline void random_backkoff_destroy(random_backoff_t *backoff) {
+static inline void random_backoff_destroy(random_backoff_t *backoff) {
     if (backoff == NULL) return;
     free(backoff);
 }
 
+static inline void random_backoff_reset(random_backoff_t *backoff) {
+    backoff->limit = backoff->min_delay;
+}
+
 static inline void random_backoff_sleep(random_backoff_t *backoff) {
-    uint64_t delay = rand64_gen_bounded(&backoff->random_gen, backoff->limit);
-    uint64_t new_limit = delay * 2;
+    uint64_t delay = backoff->min_delay + rand64_gen_bounded(&backoff->random_gen, backoff->limit);
+    if (delay > backoff->max_delay) delay = backoff->max_delay;
+    uint64_t new_limit = backoff->limit * 2;
     if (new_limit > backoff->max_delay) new_limit = backoff->max_delay;
     backoff->limit = new_limit;
     struct timespec interval;
