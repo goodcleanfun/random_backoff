@@ -68,15 +68,13 @@ jobs:
       - name: Install deps
         run: |
           mkdir -p deps\random
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/os.h -o deps\random\os.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/pcg32.h -o deps\random\pcg32.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/pcg64.h -o deps\random\pcg64.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand32.h -o deps\random\rand32.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand64.h -o deps\random\rand64.h
-          mkdir -p deps\spinlock
-          curl -L https://raw.githubusercontent.com/goodcleanfun/spinlock/refs/heads/main/src/spinlock.h -o deps\spinlock\spinlock.h
-          mkdir -p deps\cpu_relax
-          curl -L https://raw.githubusercontent.com/goodcleanfun/cpu_relax/refs/heads/main/src/cpu_relax.h -o deps\cpu_relax\cpu_relax.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_os.h -o deps\random\rand_os.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_seed.h -o deps\random\rand_seed.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_u32.h -o deps\random\rand_u32.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_u64.h -o deps\random\rand_u64.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_float.h -o deps\random\rand_float.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_double.h -o deps\random\rand_double.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rotl.h -o deps\random\rotl.h
           mkdir -p deps\greatest
           curl -L https://github.com/silentbicycle/greatest/raw/release/greatest.h -o deps\greatest\greatest.h
           mkdir -p deps\threading
@@ -100,15 +98,13 @@ jobs:
       - name: Download greatest.h
         run: |
           mkdir -p deps/random
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/os.h -o deps/random/os.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/pcg32.h -o deps/random/pcg32.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/pcg64.h -o deps/random/pcg64.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand32.h -o deps/random/rand32.h
-          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand64.h -o deps/random/rand64.h
-          mkdir -p deps/spinlock
-          curl -L https://raw.githubusercontent.com/goodcleanfun/spinlock/refs/heads/main/src/spinlock.h -o deps/spinlock/spinlock.h
-          mkdir -p deps/cpu_relax
-          curl -L https://raw.githubusercontent.com/goodcleanfun/cpu_relax/refs/heads/main/src/cpu_relax.h -o deps/cpu_relax/cpu_relax.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_os.h -o deps/random/rand_os.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_seed.h -o deps/random/rand_seed.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_u32.h -o deps/random/rand_u32.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_u64.h -o deps/random/rand_u64.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_float.h -o deps/random/rand_float.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rand_double.h -o deps/random/rand_double.h
+          curl -L https://raw.githubusercontent.com/goodcleanfun/random/refs/heads/main/src/rotl.h -o deps/random/rotl.h
           mkdir -p deps/greatest
           curl -L https://github.com/silentbicycle/greatest/raw/release/greatest.h -o deps/greatest/greatest.h
           mkdir -p deps/threading
