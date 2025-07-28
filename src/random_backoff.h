@@ -36,18 +36,18 @@ static inline void random_backoff_destroy(random_backoff_t *backoff) {
 }
 
 static inline void random_backoff_init_thread_local_rng(random_backoff_t *backoff) {
-    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
+    rand_u64_gen_t *random_gen = (rand_u64_gen_t *)tss_get(backoff->random_gen_tls);
     if (random_gen == NULL) {
-        random_gen = (rand_u64_t *)malloc(sizeof(rand_u64_t));
+        random_gen = (rand_u64_gen_t *)malloc(sizeof(rand_u64_gen_t));
         rand_u64_init(random_gen);
         tss_set(backoff->random_gen_tls, random_gen);
     }
 }
 
 static inline void random_backoff_init_thread_local_rng_seed(random_backoff_t *backoff, uint64_t seed) {
-    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
+    rand_u64_gen_t *random_gen = (rand_u64_gen_t *)tss_get(backoff->random_gen_tls);
     if (random_gen == NULL) {
-        random_gen = (rand_u64_t *)malloc(sizeof(rand_u64_t));
+        random_gen = (rand_u64_gen_t *)malloc(sizeof(rand_u64_gen_t));
         rand_u64_init_seed(random_gen, seed);
         tss_set(backoff->random_gen_tls, random_gen);
     }
@@ -77,7 +77,7 @@ static inline void random_backoff_reset(random_backoff_t *backoff) {
 }
 
 static inline void random_backoff_sleep(random_backoff_t *backoff) {
-    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
+    rand_u64_gen_t *random_gen = (rand_u64_gen_t *)tss_get(backoff->random_gen_tls);
     if (random_gen == NULL) {
         random_backoff_init_thread_local_rng(backoff);
     }
