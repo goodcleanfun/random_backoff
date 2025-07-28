@@ -1,6 +1,6 @@
 {
     "name": "random_backoff",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "repo": "goodcleanfun/random_backoff",
     "description": "Randomized doubling backoff strategy using thread-local randomness to spread out contention",
     "keywords": [],
