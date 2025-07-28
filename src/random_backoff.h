@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
-#include "random/rand64.h"
+#include "random/rand_u64.h"
 #include "threading/threading.h"
 
 typedef struct {
@@ -36,11 +36,19 @@ static inline void random_backoff_destroy(random_backoff_t *backoff) {
 }
 
 static inline void random_backoff_init_thread_local_rng(random_backoff_t *backoff) {
-    rand64_gen_t *random_gen = (rand64_gen_t *)tss_get(backoff->random_gen_tls);
+    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
     if (random_gen == NULL) {
-        random_gen = (rand64_gen_t *)malloc(sizeof(rand64_gen_t));
-        *random_gen = rand64_gen_init();
-        rand64_gen_seed_os(random_gen);
+        random_gen = (rand_u64_t *)malloc(sizeof(rand_u64_t));
+        rand_u64_init(random_gen);
+        tss_set(backoff->random_gen_tls, random_gen);
+    }
+}
+
+static inline void random_backoff_init_thread_local_rng_seed(random_backoff_t *backoff, uint64_t seed) {
+    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
+    if (random_gen == NULL) {
+        random_gen = (rand_u64_t *)malloc(sizeof(rand_u64_t));
+        rand_u64_init_seed(random_gen, seed);
         tss_set(backoff->random_gen_tls, random_gen);
     }
 }
@@ -69,7 +77,7 @@ static inline void random_backoff_reset(random_backoff_t *backoff) {
 }
 
 static inline void random_backoff_sleep(random_backoff_t *backoff) {
-    rand64_gen_t *random_gen = (rand64_gen_t *)tss_get(backoff->random_gen_tls);
+    rand_u64_t *random_gen = (rand_u64_t *)tss_get(backoff->random_gen_tls);
     if (random_gen == NULL) {
         random_backoff_init_thread_local_rng(backoff);
     }
@@ -80,7 +88,7 @@ static inline void random_backoff_sleep(random_backoff_t *backoff) {
     }
     uint64_t limit = *limit_tls;
 
-    uint64_t delay = backoff->min_delay + rand64_gen_bounded(random_gen, limit);
+    uint64_t delay = backoff->min_delay + rand_u64_bounded(random_gen, limit);
     if (delay > backoff->max_delay) delay = backoff->max_delay;
     uint64_t new_limit = limit * 2;
     if (new_limit > backoff->max_delay) new_limit = backoff->max_delay;
